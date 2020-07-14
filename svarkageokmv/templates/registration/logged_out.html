@@ -1,0 +1,8 @@
+{% extends 'registration/base.html' %}
+{% block main %}
+
+<h6 class="text-center">Вы вышли из системы!</h6>
+<a href="{% url 'home_url' %}"><button class="btn btn-primary btn-block">Перейти на главную страницу</button></a>
+<a href="{% url 'login_url' %}"><button class="btn btn-success btn-block" style="margin-top:10px;">Открыть окно авторизации</button></a>
+
+{% endblock %}

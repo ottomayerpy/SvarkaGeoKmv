@@ -1,0 +1,33 @@
+{% extends 'base.html' %} {% load static %} {% block header %}
+<script type="text/javascript" src="{% static 'js/jquery.maskedinput.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/order.js' %}?ver=2"></script>
+<title>Заказ</title>
+  {% endblock %}
+  {% block content %}
+  <nav class="navbar navbar-default navbar-fixed-top navbar-shrink" style="position: relative;">
+    <div class="container">
+      <div class="navbar-header page-scroll">
+        <a class="navbar-brand page-scroll" href="/">На главную</a>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="order-center">
+      <h2 class="text-center">Заказ</h2>
+      <h4 class="text-center" id="in-name">{{ product }}</h4>
+      <div class="form-group">
+        <label id="label-mt-qty" for="in-username">Имя</label>
+        <input class="form-control" type="text" id="in-username" placeholder="Вася Васильев">
+        <label id="label-mt-qty" for="in-phone">Телефон</label>
+        <input class="form-control" type="text" id="in-phone" placeholder="+79005556644">
+        <label id="label-mt-qty" for="in-email">Почта</label>
+        <input class="form-control" type="email" id="in-email" placeholder="ivan123@mail.ru">
+        <label id="label-mt-qty" for="txt-description">Описание</label>
+        <textarea class="form-control" name="name" rows="8" cols="80" id="txt-description" placeholder="Опишите что вы хотите получить, и ваши предпочтения будут учитаны при изготовлении"></textarea>
+      </div>
+      <button class="btn btn-primary" id="btnordersend">Отправить</button>
+    </div>
+    </div>
+  </div>
+  {% endblock %}

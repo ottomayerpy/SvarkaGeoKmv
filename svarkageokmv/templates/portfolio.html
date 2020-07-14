@@ -1,0 +1,66 @@
+{% extends 'base.html' %} {% load static %} {% block header %}
+  <script type="text/javascript" src="{% static 'js/portfolio.js' %}?ver=1"></script>
+  <title>Портфолио</title>
+  {% endblock %}
+  {% block content %}
+  <nav class="navbar navbar-default navbar-fixed-top navbar-shrink" style="position: relative;">
+    <div class="container">
+      <div class="navbar-header page-scroll">
+        <a class="navbar-brand page-scroll" href="/">На главную</a>
+      </div>
+    </div>
+  </nav>
+  <div class="container calc">
+    <div class="row">
+      <h2 class="text-center">Портфолио</h2>
+      <div class="form-group col-md-6">
+        <label id="label-mt-qty" for="in-name">Наименование</label>
+        <input class="form-control" type="text" id="in-name">
+        <label id="label-mt-qty" for="in-url">Ссылка</label>
+        <input class="form-control" type="text" id="in-url">
+      </div>
+      <div class="form-group col-md-6">
+        <label id="label-mt-qty" for="in-cost_from">Стоимость от</label>
+        <input class="form-control" type="text" id="in-cost_from">
+        <label id="label-mt-qty" for="in-cost_to">Стоимость до</label>
+        <input class="form-control" type="text" id="in-cost_to">
+      </div>
+      <div class="form-group">
+        <label id="label-mt-qty" for="in-image" class="calc-btn_add">Изображение (*.jpg)</label>
+        <form id="upload-container" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <label style="text-decoration:none;margin-bottom:10px;" for="inputfile" id="labelfile" class="btn btn-primary calc-btn_add">Выбрать файл</label>
+          <input id="inputfile" type="file" name="document" accept="image/jpg">
+          <button style="display:none;" type="submit" form="upload-container" id="btnsendimg" value="Submit"></button>
+        </form>
+        {% if url %}
+        <a id="hrefurl" style="display:none;" href="{{ url }}">{{ url }}</a>
+        {% endif %}
+      </div>
+      <button class="btn btn-primary calc-btn_add" id="btnsendportfolio">Отправить</button>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Наименование</th>
+            <th>Изображение</th>
+            <th>Cсылка</th>
+            <th>Стоимость от</th>
+            <th>Стоимость до</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in Portfl %}
+          <tr>
+            <td>{{ i.name }}</td>
+            <td>{{ i.image }}</td>
+            <td>{{ i.url }}</td>
+            <td>{{ i.cost_from }}</td>
+            <td>{{ i.cost_to }}</td>
+            <td><button type="button" class="btn btn-danger btn-round btn-disslist" data-diss-name="{{ i.name }}" data-diss-id="{{ i.id }}" data-diss-image="{{ i.image }}">X</button></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endblock %}

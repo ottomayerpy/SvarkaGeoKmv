@@ -1,0 +1,135 @@
+{% extends 'base.html' %} {% load static %} {% block header %}
+<script type="text/javascript" src="{% static 'js/jquery.maskedinput.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/order.js' %}?ver=2"></script>
+<title>Заказы</title>
+  {% endblock %}
+  {% block content %}
+  <nav class="navbar navbar-default navbar-fixed-top navbar-shrink" style="position: relative;">
+    <div class="container">
+      <div class="navbar-header page-scroll">
+        <a class="navbar-brand page-scroll" href="/">На главную</a>
+      </div>
+    </div>
+  </nav>
+  <div class="container calc">
+    <div class="row">
+      <h2 class="text-center">Заказы</h2>
+      <form id="upload-container" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label class="uploadbody" for="pages" style="text-decoration:none;cursor:default;">Страницы: </label>
+        <div class="uploadbody">
+          {% for i in page %}
+          {% if i == current_page %}
+          <button type="button" class="btn btn-primary btn-round btnpage btn-pagelist" data-page="{{ i }}">{{ i }}</button>
+          {% else %}
+          <button type="button" class="btn btn-info btn-round btnpage btn-pagelist" data-page="{{ i }}">{{ i }}</button>
+          {% endif %}
+          {% endfor %}
+        </div>
+        <input style="display:none;" id="pages" type="text" name="inpage" value="">
+        <input style="display:none;" id="filteractive" type="text" name="filteractive" value="">
+        <button style="display:none;" type="submit" form="upload-container" id="btnsendpage" value="Submit"></button>
+      </form>
+      <div class="form-group col-md-2">
+        <label class="col-md-6" for="mt-status">Фильтр:</label>
+        <select id="mt-status" class="form-control col-md-6">
+          {% if filter_active == 'All' %}
+          <option selected>Все</option>
+          {% else %}
+          <option>Все</option>
+          {% endif %}
+
+          {% if filter_active == 'True' %}
+          <option selected>Активные</option>
+          {% else %}
+          <option>Активные</option>
+          {% endif %}
+
+          {% if filter_active == 'False' %}
+          <option selected>Не активные</option>
+          {% else %}
+          <option>Не активные</option>
+          {% endif %}
+
+          {% if filter_active == 'Arhive' %}
+          <option selected>Архив</option>
+          {% else %}
+          <option>Архив</option>
+          {% endif %}
+        </select>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Номер</th>
+            <th>Наименование</th>
+            <th>Имя</th>
+            <th style="display:none;">Телефон</th>
+            <th style="display:none;">Почта</th>
+            <th style="display:none;">Описание</th>
+            <th>Дата</th>
+            <th>В работе</th>
+            <th style="display:none;">В работе</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in orders %}
+          <tr>
+            <td class="order-id" data-id="{{ i.id }}">{{ i.id }}</td>
+            <td class="order-name" data-id="{{ i.id }}">{{ i.name }}</td>
+            <td class="order-username" data-id="{{ i.id }}">{{ i.username }}</td>
+            <td style="display:none;" class="order-phone" data-id="{{ i.id }}">{{ i.phone }}</td>
+            <td style="display:none;" class="order-email" data-id="{{ i.id }}">{{ i.email }}</td>
+            <td style="display:none;" class="order-description" data-id="{{ i.id }}">{{ i.description }}</td>
+            <td class="order-created_date" data-id="{{ i.id }}">{{ i.created_date|date:"d.m.Y" }}</td>
+            {% if i.is_work %}
+            <td class="order-is_work" data-id="{{ i.id }}">Да</td>
+            {% else %}
+            <td class="order-is_work" data-id="{{ i.id }}">Нет</td>
+            {% endif %}
+            {% if i.is_arhive %}
+            <td style="display:none;" class="order-is_arhive" data-id="{{ i.id }}">Да</td>
+            {% else %}
+            <td style="display:none;" class="order-is_arhive" data-id="{{ i.id }}">Нет</td>
+            {% endif %}
+            <td>
+              <button class="btn btn-primary" data-toggle="modal" data-target="#ShowOrderModal" data-id="{{ i.id }}">Открыть</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div id="ShowOrderModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          <label for="modal-phone">Телефон</label>
+          <p id="modal-phone"></p>
+
+          <label for="modal-email">Почта</label>
+          <p id="modal-email"></p>
+
+          <label for="modal-is_work">В работе</label>
+          <p id="modal-is_work"></p>
+
+          <label for="modal-description">Описание</label>
+          <p id="modal-description"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-round btn-arhivelist" data-status="false" data-diss-id="{{ i.id }}" id="modal-btn-dearhive">Деархивировать</button>
+          <button type="button" class="btn btn-primary btn-round btn-arhivelist" data-status="true" data-diss-id="{{ i.id }}" id="modal-btn-arhive">Архивировать</button>
+          <button type="button" class="btn btn-primary btn-round btn-worklist" data-status="false" data-diss-id="{{ i.id }}" id="modal-btn-deactive">Деактивировать</button>
+          <button type="button" class="btn btn-success btn-round btn-worklist" data-status="true" data-diss-id="{{ i.id }}" id="modal-btn-active">Активировать</button>
+          <button type="button" class="btn btn-danger btn-round btn-disslist" data-diss-id="{{ i.id }}" id="modal-btn-delete">Удалить</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

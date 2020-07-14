@@ -1,0 +1,41 @@
+{% extends 'base.html' %} {% load static %} {% block header %}
+  <title>Импорт</title>
+  {% endblock %}
+  {% block content %}
+  <nav class="navbar navbar-default navbar-fixed-top navbar-shrink" style="position: relative;">
+    <div class="container">
+      <div class="navbar-header page-scroll">
+        <a class="navbar-brand page-scroll" href="/">На главную</a>
+        <a href="{% url 'calculator_url' %}" class="btn btn-primary btnref">Калькулятор</a>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10 col-md-12">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2 class="text-center">Импорт Excel (xlsx, xls)</h2>
+            <form class="center-block upload-container_style" id="upload-container" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <img id="upload-image" src="{% static 'img/upload.svg' %}">
+              <label style="text-decoration:none;margin-bottom:10px;" for="inputfile" class="btn btn-primary">Выбрать файл</label>
+              <span class="text-center" id="uploadspantext">После выбора<br>нажмите кнопку "Отправить"</span>
+              <input id="inputfile" type="file" name="document" accept=".xlsx,.xls">
+              <button class="btn btn-primary container-contactModal btn-closecontactModal" type="submit" form="upload-container" value="Submit">Отправить</button>
+            </form>
+            {% if url %}
+            <a id="hrefurl" style="display:none;" href="{{ url }}">{{ url }}</a>
+            <script type="text/javascript" src="{% static 'js/import.js' %}?ver=1"></script>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    $('#inputfile').on('change', function(){
+        $('label').text($(this).val().replace('C:\\fakepath\\', ''));
+    });
+  </script>
+  {% endblock %}

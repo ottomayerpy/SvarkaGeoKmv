@@ -1,0 +1,149 @@
+{% extends 'base.html' %} {% load static %} {% block header %}
+  <meta name="description" content="description content">
+  <script type="text/javascript" src="{% static 'js/script.js' %}?ver=1"></script>
+  <title>Заголовок</title>
+  {% endblock %}
+  {% block content %}
+  <nav class="navbar navbar-default navbar-fixed-top navbar-shrink">
+    <div class="container contact-header">
+      <ul class="nav navbar-nav navbar-right container-center">
+        <li class="">
+          <a href="tel:+79999999999">+7 (999) 999-99-99</a>
+        </li>
+        <li class="">
+          <a href="tel:+78888888888">+7 (888) 888-88-88</a>
+        </li>
+        <li class="">
+          <a href="mailto:mail123@mail.ru">mail123@mail.ru</a>
+        </li>
+      </ul>
+    </div>
+    <div class="container">
+      <div class="navbar-header page-scroll">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand page-scroll" href="#page-top">Заголовок</a>
+        <a class="navbar-brand contactModal-Button" href="#contactModal" data-toggle="modal">Контакты</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="hidden active"><a href="#page-top"></a></li>
+          <li><a class="page-scroll" href="#portfolio">Заказать</a></li>
+          <li><a class="page-scroll" href="#maps">Карта</a></li>
+          <li><a href="{% url 'calculator_url' %}">Калькулятор</a></li>
+          {% if not request.user.is_authenticated %}
+          <li><a class="page-scroll" href="{% url 'login_url' %}">Авторизация</a></li>
+          {% else %}
+          <li class="">
+            <a style="cursor:pointer;" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Меню<span class="caret"></span></a>
+            <ul class="dropdown-menu mydropdown-menu" aria-labelledby="dropdownMenu1">
+              <li class="dropdown-header">Инструменты</li>
+              <li><a href="{% url 'portfolio_url' %}">Портфолио</a></li>
+              <li><a href="{% url 'order-admin_page_url' %}">Заказы</a></li>
+              <li role="separator" class="divider"></li>
+              <li class="dropdown-header">Аккаунт: <span>{{ request.user }}</span></li>
+              <li><a href="{% url 'logout_url' %}">Выход</a></li>
+            </ul>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <header>
+    <div class="container">
+      <div class="intro-text">
+        <div class="intro-heading text-shadows cursor-default">Заголовок</div>
+        <div class="intro-lead-in text-shadows cursor-default">Нас рекомендуют</div>
+        <a href="#portfolio" class="page-scroll btn btn-xl">Заказать работу</a>
+      </div>
+    </div>
+  </header>
+  <section id="portfolio" class="bg-light-gray">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2 class="section-heading cursor-default">Заказать услуги</h2>
+          <h3 class="section-subheading text-muted cursor-default">Подробный список всех предоставляемых нами услуг</h3>
+        </div>
+      </div>
+      <div class="row">
+        {% for portfl in Portfl %}
+        <div class="col-md-4 col-sm-6 portfolio-item">
+          <div class="portfolio-link">
+            <div class="portfolio-hover">
+              <div class="portfolio-hover-content">
+                <a class="btn btn-primary btn-round calc-btn_add order-center" style="margin-bottom:10px;width:150px;" href="{% url 'order-client_page_url' %}?product={{ portfl.name }}">Заказать</a>
+                <a class="btn btn-primary btn-round calc-btn_add order-center" style="width:150px;" href="{{ portfl.url }}">Демонстрация</a>
+              </div>
+            </div>
+            <img src="/static/img/portfolio/{{ portfl.image }}" class="img-size" alt="Портфолио">
+          </div>
+          <div class="portfolio-caption">
+            <h4>{{ portfl.name }}</h4>
+            <p class="text-muted">₽ {{ portfl.cost_from }}-{{ portfl.cost_to }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <section id="maps">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2 class="section-heading cursor-default">Карта</h2>
+          <h3 class="section-subheading text-muted cursor-default">Физический адрес на карте<br><br>Нажмите на картинку, чтобы перейти на сайт яндекс карт</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="map">
+            <div id="map"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <a href="https://www.instagram.com/"><img src="{% static 'img/insta.svg' %}" alt="Инстаграм лого svg" style="width:100px;"></a>
+        </div>
+        <div class="col-md-6">
+          <span class="copyright cursor-default">copyright</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <div class="contact-modal modal" id="contactModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="contactModal-content">
+      <div class="container container-contactModal">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="modal-body">
+              <div class="map-box">
+                <div class="close-modal" data-dismiss="modal">
+                  <div class="lr">
+                    <div class="rl">
+                    </div>
+                  </div>
+                </div>
+                <p>Физический адрес на карте</p>
+                <p><a href="tel:+79999999999">+7 (999) 999-99-99</a></p>
+                <p><a href="tel:+78888888888">+7 (888) 888-88-88</a></p>
+                <p><a href="mailto:mail123@mail.ru">mail123@mail.ru</a></p>
+                <button type="button" class="btn btn-primary container-contactModal btn-closecontactModal" data-dismiss="modal">Закрыть</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

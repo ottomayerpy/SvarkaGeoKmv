@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="google" value="notranslate">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="X-UA-Compatible">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}?ver=3">
+  <link href="{% static 'img/ico/favicon.ico' %}" rel="shortcut icon" type="image/x-icon">
+  <title>Авторизация</title>
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top navbar-shrink">
+    <div class="container">
+      <div class="navbar-header page-scroll">
+        <a class="navbar-brand page-scroll" href="/">На главную</a>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div>
+        <h1 class="text-center">Система контроля аккаунтов</h1>
+        {% block main %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

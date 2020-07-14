@@ -1,0 +1,128 @@
+{% extends 'base.html' %} {% load static %} {% block header %}
+  <script type="text/javascript" src="{% static 'js/calculator.js' %}?ver=1"></script>
+  <title>Калькулятор</title>
+  {% endblock %}
+  {% block content %}
+  <nav class="navbar navbar-default navbar-fixed-top navbar-shrink" style="position: relative; margin-bottom: 0;">
+    <div class="container">
+      <div class="navbar-header page-scroll">
+        <a class="navbar-brand page-scroll" href="/">На главную</a>
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'import_url' %}" class="btn btn-primary btnref">Импорт</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+  <div class="container calc">
+    <div class="row">
+      <div class="col-md-6">
+        <div id="calc">
+          {% if request.user.is_authenticated %}
+          <div class="row col-md-6">
+          {% else %}
+          <div class="row">
+          {% endif %}
+            <div class="form-group">
+              <label for="mt-type">Тип</label>
+              <select id="mt-type" class="form-control">
+                {% for i in data %}
+                {% if i.T == 'Types' %}
+                {% for x in i.V %}
+                <option>{{ x }}</option>
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="mt-size">Размер</label>
+              <select id="mt-size" class="form-control">
+                {% for i in data %}
+                {% if not i.T == 'Types' %}
+                {% if i.T == firsttype %}
+                <option typename="{{ i.T }}" style="display:block;" cost="{{ i.V.C }}">{{ i.V.N }} ({{ i.V.U }})</option>
+                {% else %}
+                <option typename="{{ i.T }}" style="display:none;" cost="{{ i.V.C }}">{{ i.V.N }} ({{ i.V.U }})</option>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label id="label-mt-qty" for="mt-qty">Кол-во</label>
+              <input class="form-control mt-input" type="number" size="3" min="1" value="1" id="mt-qty">
+            </div>
+          </div>
+          {% if request.user.is_authenticated %}
+          <div class="row col-md-6" id="percentblock">
+          {% else %}
+          <div style="display:none;" class="row col-md-6" id="percentblock">
+          {% endif %}
+            <div class="form-group">
+              <label for="mt-mathchar">Знак</label>
+              <select id="mt-mathchar" class="form-control">
+                <option>+</option>
+                <option>-</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label id="label-mt-percent" for="mt-percent">Процент</label>
+              <input class="form-control mt-input" type="number" size="3" min="0" value="0" id="mt-percent">
+            </div>
+            <div class="form-group">
+              <label id="label-mt-reportname" for="mt-reportname">Имя отчета</label>
+              <input class="form-control" type="text" placeholder="Отчет №32" id="mt-reportname">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <table class="table" id="tablecalc">
+          <thead>
+            <tr>
+              <th>Параметры элемента</th>
+              <th>Цена</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Цена</td>
+              <td floatVal="0.0" id="cl-cost">-</td>
+            </tr>
+            <tr>
+              <td>Кол-во</td>
+              <td floatVal="0.0" id="cl-qty">-</td>
+            </tr>
+            <tr>
+              <td>Итого</td>
+              <td floatVal="0.0" id="cl-sum">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button type="button" id="calcbtnadd" class="btn btn-primary calc-btn_add">Добавить</button>
+      <div id="docx" class="lrpadding">
+        <table class="table" id="tableexport" width="100%">
+          <thead>
+            <tr>
+              <th>Наименование</th>
+              <th>Кол-во</th>
+              <th>Цена</th>
+            </tr>
+          </thead>
+          <tbody class="table-productlist">
+
+          </tbody>
+          <tr>
+            <td>Итого</td>
+            <td></td>
+            <td id="tdtotalsum">0.00 руб.</td>
+          </tr>
+        </table>
+      </div>
+      {% if request.user.is_authenticated %}
+      <button type="button" id="reportbtn" class="btn btn-primary calc-btn_add">Отчёт</button>
+      {% endif %}
+    </div>
+  </div>
+  {% endblock %}
