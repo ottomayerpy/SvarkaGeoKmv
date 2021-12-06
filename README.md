@@ -8,7 +8,7 @@
 
 Клонируйте данный репозиторий и перейдите в каталог SvarkaGeoKmv.
 ```
-git clone https://github.com/nikitakoltman/SvarkaGeoKmv
+git clone https://github.com/ottomayerpy/SvarkaGeoKmv
 cd SvarkaGeoKmv
 ```
 Создайте и активируйте виртуальное окружение python.
